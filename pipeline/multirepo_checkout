@@ -1,0 +1,11 @@
+node {
+    dir('docker') {
+        git url: 'https://github.com/mzul321/docker.git'
+    }
+    dir('RepoTwo') {
+        git url: 'https://github.com/somewhere/RepoTwo.git'
+    }
+
+#    sh('. RepoOne/build.sh')
+#    sh('. RepoTwo/build.sh')
+}
