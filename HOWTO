@@ -1,6 +1,14 @@
 # To Run Docker via windows, with mounted share
 docker run -d -p 49001:8080 -v C:\local\devops\jenkins\:/var/jenkins_home:z -t jenkins
-docker run --name myjenkins -p 8080:8080 -p 50000:50000 -v c:\local\devops\jenkins\:/var/jenkins_home jenkins
+docker run --name myjenkins -p 8080:8080 -p 50000:50000 -H tcp://127.0.0.1:4243 -H unix:///var/run/docker.sock -v c:\local\devops\jenkins\:/var/jenkins_home jenkins 
+docker run -d \
+   -v /var/run/docker.sock:/var/run/docker.sock \
+   -v $(which docker):/usr/bin/docker \
+   -p 8080:8080 jenkins
+docker run -v ${JENKINS_HOME}:/var/jenkins_home \
+     -v /var/run/docker.sock:/var/run/docker.sock \
+     -v $(which docker):/bin/docker -p 8080:8080 \
+     -p 50000:50000 damnhandy/jenkins
 
 # To commit the state of a container <container> <reposiotry_name:version>
 docker commit -m "admin created" jenkins26 jenkins26:1
@@ -28,3 +36,9 @@ docker build -t fusionz/node .
 # Arun gupta Couchbase
 http://localhost:8091
 docker run -d --name db -p 8091-8093:8091-8093 -p 11210:11210 arungupta/oreilly-couchbase:latest
+
+# Docker bash
+docker exec -it <container_id> /bin/bash
+
+#DOcker Agent
+https://hub.docker.com/r/vfarcic/jenkins-swarm-agent/

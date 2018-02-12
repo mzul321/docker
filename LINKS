@@ -1,0 +1,16 @@
+https://github.com/microsoft/devops-project-samples/
+
+Docker (Jenkins DSL)
+https://jenkins.io/doc/book/pipeline/syntax/
+
+Ontrack CI/CD project
+https://github.com/nemerosa
+
+# Good Example to post to Slack via Jenkins Pipeline and docker
+http://fishi.devtail.io/weblog/2016/11/20/docker-build-pipeline-as-code-jenkins/
+
+# Arun Gupta Couchbase
+http://blog.arungupta.me/deployment-pipeline-docker-jenkins-java-couchbase/
+
+# Docker as Slave
+https://devopscube.com/docker-containers-as-build-slaves-jenkins/
