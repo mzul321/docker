@@ -39,7 +39,8 @@ node {
     try {
       dir('webapp') {
         sh "mvn test"
-        docker.build("arungupta/docker-jenkins-pipeline:${env.BUILD_NUMBER}").push()
+        //docker.build("arungupta/docker-jenkins-pipeline:${env.BUILD_NUMBER}").push()
+        /usr/local/bin/docker build -t arungupta/docker-jenkins-pipeline:${env.BUILD_NUMBER}  
       }
     } catch (error) {
     } finally {
