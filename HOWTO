@@ -1,6 +1,7 @@
 # To Run Docker via windows, with mounted share
 docker run -d -p 49001:8080 -v C:\local\devops\jenkins\:/var/jenkins_home:z -t jenkins
 docker run --name myjenkins -p 8080:8080 -p 50000:50000 -H tcp://127.0.0.1:4243 -H unix:///var/run/docker.sock -v c:\local\devops\jenkins\:/var/jenkins_home jenkins 
+docker run --name myjenkins -p 8080:8080 -p 50000:50000 -v tcp://127.0.0.1:4243 -v unix:///var/run/docker.sock -v c:\local\devops\jenkins\:/var/jenkins_home fusionz/jenkins:pipeline_v1 
 docker run -d \
    -v /var/run/docker.sock:/var/run/docker.sock \
    -v $(which docker):/usr/bin/docker \
@@ -9,6 +10,8 @@ docker run -v ${JENKINS_HOME}:/var/jenkins_home \
      -v /var/run/docker.sock:/var/run/docker.sock \
      -v $(which docker):/bin/docker -p 8080:8080 \
      -p 50000:50000 damnhandy/jenkins
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):$(which docker) -p 8080:8080 -v /smb/jenkins_home:/var/jenkins_home jenkins-docker
+docker run -v C:\local\devops\jenkins\run\docker.sock:/var/run/docker.sock -v $(which docker):$(which docker) -p 8080:8080 -v c:\local\devops\jenkins\:/var/jenkins_homefusionz/jenkins:pipeline_v1 
 
 # To commit the state of a container <container> <reposiotry_name:version>
 docker commit -m "admin created" jenkins26 jenkins26:1
@@ -42,3 +45,40 @@ docker exec -it <container_id> /bin/bash
 
 #DOcker Agent
 https://hub.docker.com/r/vfarcic/jenkins-swarm-agent/
+
+# Docker Jenkins Slave
+http://varmenise.tumblr.com/post/87976165063/docker-on-centos-jenkins
+http://www.scmtechblog.net/2016/01/setup-docker-slaves-for-jenkins.html
+
+# Docker Slave
+docker run -i -t evarga/jenkins-slave /bin/bash
+
+# Step by step
+root@4c947423fb65:/# ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Created directory '/root/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+cf:c6:a3:15:8a:0c:fb:91:40:74:f7:3d:b9:e8:56:e2 root@4c947423fb65
+The key's randomart image is:
++--[ RSA 2048]----+
+|    . . .        |
+|   . . . . . .   |
+|    .     . +    |
+|   .       . o   |
+|    o   S + o    |
+|     = o B +     |
+|    . = . E      |
+|     . . = .     |
+|      . .        |
++-----------------+
+root@4c947423fb65:/#
+root@4c947423fb65:/# echo 'AuthorizedKeysFile /etc/ssh/authorized_keys' >> /etc/ssh/sshd_config
+root@4c947423fb65:/# cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXpC7gUvMIXOP8B5pf0A9EC1eFFqQm6lTTbCprdoWiH4M7EPSHBNIaTYjQT2Z6k6bp23/+k5ku/V1HIAtZNMFuY2X8eAPgF26IpnI/BmIOZgXXETqoHPKDjpcgrrqQRQxeTCoSI2NW2pV81X3EbTqoSITIqJ4YJ947kmTZco89LF6PtLb8vZckGSTyJddLNsskayLd55zrDM/9NIOrxkwzxT+XQmC2A+8dIhWjlEmfN0c+s8gDts6KAXIuTXsHFdkgQimHBWYntUTeu1q32cg6DVNSkj1NtLlXVyuuwg1w4FE8b1eDKBAfDk18ILDnoRUwILuPMlud6crGxj5Od7rh root@4c947423fb65
+root@4c947423fb65:/# echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXpC7gUvMIXOP8B5pf0A9EC1eFFqQm6lTTbCprdoWiH4M7EPSHBNIaTYjQT2Z6k6bp23/+k5ku/V1HIAtZNMFuY2X8eAPgF26IpnI/BmIOZgXXETqoHPKDjpcgrrqQRQxeTCoSI2NW2pV81X3EbTqoSITIqJ4YJ947kmTZco89LF6PtLb8vZckGSTyJddLNsskayLd55zrDM/9NIOrxkwzxT+XQmC2A+8dIhWjlEmfN0c+s8gDts6KAXIuTXsHFdkgQimHBWYntUTeu1q32cg6DVNSkj1NtLlXVyuuwg1w4FE8b1eDKBAfDk18ILDnoRUwILuPMlud6crGxj5Od7rh root@4c947423fb65'  > /etc/ssh/authorized_keys
+root@4c947423fb65:/# echo "    IdentityFile /root/.ssh/id_rsa" >> /etc/ssh/ssh_config

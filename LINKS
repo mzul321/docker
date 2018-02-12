@@ -14,3 +14,4 @@ http://blog.arungupta.me/deployment-pipeline-docker-jenkins-java-couchbase/
 
 # Docker as Slave
 https://devopscube.com/docker-containers-as-build-slaves-jenkins/
+https://www.cloudbees.com/blog/templating-jenkins-build-environments-docker-containers

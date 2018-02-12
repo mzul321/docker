@@ -1,0 +1,16 @@
+Setting up Host for Docker
+
+curl -sSL https://get.docker.com/ | sh
+
+sudo usermod -aG docker jenkins
+
+vi /etc/default/docker
+
+Add following value in DOCKER_OPTS
+
+-H tcp://0.0.0.0:6789
+
+Your complete entry of might look like this (you may have some more info for your docker registry depending upon your requirement).
+DOCKER_OPTS="--ipv6=false -H tcp://0.0.0.0:6789 -H unix:///var/run/docker.sock
+
+Now, restart the docker by "service docker restart" to load above configuration. 
