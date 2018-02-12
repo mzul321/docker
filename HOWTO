@@ -13,3 +13,18 @@ jenkins26                  1                   8a3a52381ca0        17 minutes ag
 jenkins                    1                   8a3a52381ca0        17 minutes ago      811MB
 PS C:\Users\santander> docker tag jenkins26:1 fusionz/jenkins:init
 PS C:\Users\santander> docker push fusionz/jenkins:init
+
+# To Build dockerfile
+FROM nginx:alpine
+COPY . /usr/share/nginx/html
+
+docker build -t webserver-image:v1 .
+docker run -d -p 80:80 webserver-image:v1
+
+# Another nginx
+docker run -d --name redis -p 6379:6379 redis
+docker build -t fusionz/node .
+
+# Arun gupta Couchbase
+http://localhost:8091
+docker run -d --name db -p 8091-8093:8091-8093 -p 11210:11210 arungupta/oreilly-couchbase:latest
